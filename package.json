@@ -1,0 +1,30 @@
+{
+  "name": "hengyuantest",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.1",
+    "pinia": "^2.1.7",
+    "swiper": "^11.0.4",
+    "vant": "^4.7.3",
+    "video.js": "^8.6.1",
+    "vue": "^3.3.4",
+    "vue-awesome-swiper": "^5.0.1",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "@vant/auto-import-resolver": "^1.0.2",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "sass": "^1.69.5",
+    "typescript": "^5.0.2",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.5",
+    "vue-tsc": "^1.8.5"
+  }
+}
