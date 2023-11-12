@@ -12,12 +12,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, onUpdated, watch, nextTick } from "vue";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
-const { url } = defineProps({
+const show = ref<boolean>(false);
+const props = defineProps({
   url: { type: String, default: "" },
+  isActive: { type: Boolean, default: false },
 });
+
 const videoPlayer = ref();
 const videoRef = ref<null | HTMLVideoElement>(null);
 const defaultOptions = { aspectRatio: "16:9" };
@@ -28,6 +31,8 @@ const videoOptions = ref({
     pictureInPictureToggle: false,
     fullscreenToggle: false,
   },
+  autoplay: true,
+  muted: true,
   liveui: true,
   fluid: false,
   controls: true,
@@ -39,31 +44,36 @@ const videoOptions = ref({
   sources: [
     {
       type: "application/x-mpegURL",
-      src: url,
+      src: props.url,
     },
   ],
 });
 
-onMounted(() => {
-  if (!videoRef.value) return;
+const initVideoPlayer = () => {
   videoPlayer.value = videojs(videoRef.value, {
-    ...videoOptions,
+    ...videoOptions.value,
     ...defaultOptions,
   });
-  videoPlayer.value.on("error", () => {
-    // if error
-  });
-
-  videoPlayer.value.one("waiting", () => {});
-  videoPlayer.value.on("play", () => {
-    // emit("play");
-  });
-
-  videoPlayer.value.on("ended", () => {
-    // emit("ended");
-  });
+};
+onMounted(() => {
+  if (!videoRef.value) return;
+  if (props.isActive) initVideoPlayer();
 });
 
+watch(
+  () => props.isActive,
+  (nowActive: boolean) => {
+    if (nowActive) {
+      if (!videoPlayer.value) {
+        initVideoPlayer();
+      } else {
+        videoPlayer.value.play();
+      }
+    } else {
+      videoPlayer.value.pause();
+    }
+  }
+);
 onUnmounted(() => {
   if (videoPlayer.value) {
     videoPlayer.value.dispose();
@@ -71,4 +81,8 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped>
+:deep(.video-js) {
+  height: calc(100%) !important;
+}
+</style>

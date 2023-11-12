@@ -1,5 +1,5 @@
 <template>
-  <div class="short-video-detail" :class="{ useSafeArea: isiPhoneX && false }">
+  <div class="video-detail" :class="{ useSafeArea: isiPhoneX && false }">
     <easy-image
       class="cover"
       fit="cover"
@@ -9,7 +9,8 @@
     />
     <video-vertical
       class="player"
-      v-if="isActive && item.play_url"
+      v-show="isActive && item.play_url"
+      :isActive="isActive && isActiveName === item.group"
       :url="item.play_url"
     />
     <div
@@ -19,7 +20,7 @@
     >
       <div class="info-actions">
         <div class="info">
-          <div class="title">{{ item.name }}</div>
+          <div class="title">{{ item.title }}</div>
         </div>
       </div>
     </div>
@@ -32,15 +33,38 @@ import useDeviceStore from "../store/useDeviceStore";
 import easyImage from "./easyImage.vue";
 import videoVertical from "./videoVertical.vue";
 
-const { item, isActive } = defineProps({
+const { item, isActive, isActiveName } = defineProps({
   item: {
     type: Object,
     default: () => {},
   },
   isActive: { type: Boolean, default: true },
+  isActiveName: { type: String, default: "following_list" },
 });
-
 const { isiPhoneX } = storeToRefs(useDeviceStore());
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.video-detail {
+  position: relative;
+  height: calc(100% - 50px);
+}
+
+.player {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.video-info {
+  position: absolute;
+  left: 0;
+  bottom: 20%;
+  width: 100%;
+  pointer-events: none;
+}
+.title {
+  color: white;
+}
+</style>

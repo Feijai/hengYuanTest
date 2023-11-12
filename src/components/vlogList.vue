@@ -6,9 +6,16 @@
     @swiper="setSwiperRef"
     @slideChangeTransitionEnd="onSwiperChange"
   >
-    <swiper-slide v-for="(item, i) in renderData" :key="i" :virtualIndex="i">
-      {{ item }}{{ selectSwiperIndex }}
-      <vlog-detail :item="item" :is-active="selectSwiperIndex === i" />
+    <swiper-slide
+      v-for="(item, i) in renderData"
+      :key="item.title"
+      :virtualIndex="i"
+    >
+      <vlog-detail
+        :item="item"
+        :is-active="selectSwiperIndex === i"
+        :is-active-name="filter"
+      />
     </swiper-slide>
   </swiper>
 </template>
@@ -41,7 +48,12 @@ const onSwiperChange = () => {
 
 onMounted(() => {
   axios.get(`http://localhost:3000/${filter}`).then((res) => {
-    renderData.value = [...res.data.items];
+    renderData.value = [
+      ...res.data.items.map((ele: RenderDataProps) => ({
+        ...ele,
+        group: filter,
+      })),
+    ];
   });
 });
 </script>
@@ -51,10 +63,10 @@ onMounted(() => {
   height: 100vh;
 }
 .swiper-slide {
-  /* height: 100%;
-  line-height: 100vh;
-  font-size: 30px;
-  text-align: center;
-  background-color: skyblue; */
+  height: 100%;
+  /* line-height: 100vh; */
+  font-size: 24px;
+  /* text-align: center; */
+  background-color: black;
 }
 </style>

@@ -1,25 +1,13 @@
 <template>
-  <div class="page">
-    <van-tabs v-model:active="active">
-      <van-tab title="Following" name="following_list">
-        <vlog-list :filter="active" />
-      </van-tab>
-      <van-tab title="For You" name="for_you_list">
-        <vlog-list :filter="active" />
-      </van-tab>
-    </van-tabs>
-    <tabbar />
-  </div>
+  <KeepAlive>
+    <component :is="current"></component>
+  </KeepAlive>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import vlogList from "./components/vlogList.vue";
-import tabbar from "./components/tabbar.vue";
-const active = ref("following_list");
+import home from "./pages/home/index.vue";
+import { shallowRef } from "vue";
+const current = shallowRef(home);
 </script>
 
-<style scoped lang="scss">
-.page {
-}
-</style>
+<style lang="scss" scoped></style>
