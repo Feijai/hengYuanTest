@@ -1,11 +1,11 @@
 <template>
-  <div class="easy-image" :style="{ height: height ? heightUnit : '' }">
+  <div class="easy-image" :style="{ height: '100% ' }">
     <img
       v-if="url"
       :src="url"
       alt=""
       :style="{
-        objectFit: fit,
+        objectFit: 'cover',
         width: '100%',
         height: '100%',
       }"
@@ -14,21 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
-const { url, fit, height } = defineProps({
+import { onMounted } from "vue";
+const { url } = defineProps({
   url: { type: String, default: "" },
-  fit: { type: String, default: "cover" },
-  height: { type: String || Number, default: "" },
-  useBrowserDownload: { type: Boolean, default: true },
-  createUrl: { type: Boolean, default: false },
-});
-
-const heightUnit = computed(() => {
-  if (height && height.indexOf("%") === -1 && !isNaN(parseInt(height))) {
-    return `${height}px`;
-  } else {
-    return height;
-  }
 });
 
 onMounted(() => {});

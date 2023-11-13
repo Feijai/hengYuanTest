@@ -12,17 +12,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, onUpdated, watch, nextTick } from "vue";
+import { onMounted, onUnmounted, ref,watch  } from "vue";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
-const show = ref<boolean>(false);
 const props = defineProps({
   url: { type: String, default: "" },
   isActive: { type: Boolean, default: false },
 });
 
 const videoPlayer = ref();
-const videoRef = ref<null | HTMLVideoElement>(null);
+const videoRef = ref<HTMLVideoElement>();
 const defaultOptions = { aspectRatio: "16:9" };
 
 const videoOptions = ref({
@@ -50,7 +49,7 @@ const videoOptions = ref({
 });
 
 const initVideoPlayer = () => {
-  videoPlayer.value = videojs(videoRef.value, {
+  videoPlayer.value = videojs(videoRef.value!, {
     ...videoOptions.value,
     ...defaultOptions,
   });

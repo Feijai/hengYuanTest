@@ -2,8 +2,6 @@
   <div class="video-detail" :class="{ useSafeArea: isiPhoneX && false }">
     <easy-image
       class="cover"
-      fit="cover"
-      height="100%"
       :url="item.cover"
       disabled-error
     />
